@@ -1,15 +1,14 @@
 package com.example.listatareas.data
 
-class Task(val ID : Long, var name: String, var done: Boolean )
+class Task(var id : Long, var name: String, var done: Boolean= false)
 {
 
    companion object
    {
-       const val TABLE_NAME = "Task"
-       const val COLUMN_ID = "Task"
-       const val COLUMN_NAME = "Task"
-       const val COLUMN_DONE = "Task"
-
+       const val TABLE_NAME = "TASK"
+       const val COLUMN_ID = "ID"
+       const val COLUMN_NAME = "NAME"
+       const val COLUMN_DONE = "DONE"
 
     }
 
