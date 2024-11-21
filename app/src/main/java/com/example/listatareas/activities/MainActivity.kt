@@ -1,9 +1,11 @@
 package com.example.listatareas.activities
 
 import android.content.ContentValues
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.listatareas.R
 import com.example.listatareas.adapter.TaskAdapter
@@ -15,7 +17,7 @@ import com.example.listatareas.utils.DBManager
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var taskDao: TaskDAO
-    var taskList: List<Task> = emptyList()
+    var taskList: MutableList<Task> = mutableListOf()
     lateinit var adapter: TaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,29 +27,65 @@ class MainActivity : AppCompatActivity() {
 
         taskDao= TaskDAO(this)
 
-
-
-       adapter=TaskAdapter(taskList){
+       adapter=TaskAdapter(taskList,{
 
            val task = taskList[it]
-           task.done= !task.done
-           taskDao.update(task)
-           adapter.updateItems(taskList)
+          showTask(task)
+       },{
+        val task= taskList[it]
+           checkTask(task)
+        },{
+            val task= taskList[it]
+           deleteTask(task)
        }
-
+       )
         binding.recyclerView.adapter= adapter
         binding.recyclerView.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
 
 
-
+        binding.addFAButton.setOnClickListener{
+            intent= Intent(this, TaskActivity::class.java)
+            startActivity(intent)
+        }
 
 
 
     }
 
+    private fun showTask(task: Task) {
+
+        intent= Intent(this, TaskActivity::class.java)
+        intent.putExtra(TaskActivity.EXTRA_task_id, task.id)
+        startActivity(intent)
+
+    }
+
+    private fun checkTask(task: Task) {
+        task.done= !task.done
+        taskDao.update(task)
+        taskDao.update(task)
+
+    }
+
+    private fun deleteTask(task: Task) {
+
+        AlertDialog.Builder(this)
+            .setTitle("Borrar?")
+            .setMessage("Estas seguro que quieres borrar esta tarea?")
+            .setPositiveButton(android.R.string.ok) { dialog, wich->
+                taskDao.delete(task)
+                taskList.remove(task)
+                adapter.updateItems(taskList)
+            }
+            .setNegativeButton(android.R.string.cancel,null)
+            .setIcon(R.drawable.ic_delete)
+            .show()
+    }
+
+
     override fun onResume() {
         super.onResume()
-        taskList=taskDao.findAll()
+        taskList= taskDao.findAll().toMutableList()
         adapter.updateItems(taskList)
     }
 

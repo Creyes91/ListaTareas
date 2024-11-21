@@ -73,7 +73,7 @@ class TaskDAO(var context: Context) {
         }
 
         try{
-            val deletedRows= db.delete(Task.TABLE_NAME,"1", null)
+            val deletedRows= db.delete(Task.TABLE_NAME,"${Task.COLUMN_ID}=${task.id}", null)
         }catch (e:Exception)
         {
             Log.e("DB", e.stackTraceToString())

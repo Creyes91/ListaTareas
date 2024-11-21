@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.listatareas.data.Task
 import com.example.listatareas.databinding.ItemTaskBinding
 
-class TaskAdapter(var items: List<Task>, val onItemClick:(Int)-> Unit): RecyclerView.Adapter<ViewHolder>() {
+class TaskAdapter(var items: List<Task>,
+                  val onItemClick:(Int)-> Unit,
+                  val onItemCheck:(Int)-> Unit,
+                  val onItemDelete:(Int)-> Unit
+                  ): RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -26,6 +30,13 @@ class TaskAdapter(var items: List<Task>, val onItemClick:(Int)-> Unit): Recycler
             onItemClick(position)
         }
 
+        holder.binding.checkbox.setOnClickListener {
+            onItemCheck(position)
+        }
+        holder.binding.deleteBTN.setOnClickListener{
+            onItemDelete(position)
+        }
+
 
     }
 
@@ -43,6 +54,7 @@ class ViewHolder( val binding: ItemTaskBinding): RecyclerView.ViewHolder(binding
     fun render (task: Task)
     {
         binding.nameTextView.text= task.name
+        binding.checkbox.isChecked=task.done
 
     }
 
