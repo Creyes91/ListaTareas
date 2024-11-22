@@ -1,41 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?android:attr/selectableItemBackground"
-    android:orientation="horizontal">
+    android:layout_margin="10dp"
+    app:cardCornerRadius="16dp"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
 
     <CheckBox
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/nameTextView"
+        app:layout_constraintEnd_toStartOf="@id/DataLinearLayout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
     </CheckBox>
 
 
-    <TextView
-        android:id="@+id/nameTextView"
+    <LinearLayout
+        android:id="@+id/DataLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="5dp"
         app:layout_constraintStart_toEndOf="@id/checkbox"
         app:layout_constraintEnd_toStartOf="@id/deleteBTN"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="18dp"
-        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/horaTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="8:00"
+
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_weight="1"
+
         tools:text="Tarea">
 
 
     </TextView>
-
+    </LinearLayout>
 
     <Button
         android:id="@+id/deleteBTN"
@@ -43,11 +67,12 @@
         android:layout_height="wrap_content"
         style="?attr/materialIconButtonStyle"
         app:icon= "@drawable/ic_delete"
-        app:layout_constraintStart_toEndOf="@id/nameTextView"
+        app:layout_constraintStart_toEndOf="@id/DataLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
     </Button>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

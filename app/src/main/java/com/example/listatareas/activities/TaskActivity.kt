@@ -1,5 +1,8 @@
 package com.example.listatareas.activities
 
+import android.app.DatePickerDialog
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +12,8 @@ import com.example.listatareas.R
 import com.example.listatareas.data.Task
 import com.example.listatareas.data.providers.TaskDAO
 import com.example.listatareas.databinding.ActivityTaskBinding
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.util.Locale
 
 
 class TaskActivity : AppCompatActivity() {
@@ -35,33 +40,41 @@ class TaskActivity : AppCompatActivity() {
             task = taskDAO.findById(id)!!
             binding.nameTextField.editText?.setText(task.name)
         }else {
-            var task = Task(-1, "")
+            task = Task(-1, "")
         }
 
-        val editText= binding.nameTextField?.editText
 
 
-            editText?.addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun afterTextChanged(s: Editable?) {
 
 
-                }
+
+
+
+        //activar o desactivar botton guardar
+
+        val editText= binding.nameTextField.editText!!
+
+        editText.addTextChangedListener(object : TextWatcher
+        {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.saveButton.isEnabled= s?.isNotEmpty()==true
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+
+        })
+
+
+
+
+        //Click boton guardar
         binding.saveButton.setOnClickListener{
             var name = binding.nameTextField.editText?.text.toString()
             if(name.isEmpty()){
@@ -80,9 +93,32 @@ class TaskActivity : AppCompatActivity() {
 
         }
 
+        binding.datePickerActions.editText?.setOnClickListener{
+            datePicker()
+
+        }
+
 
 
 
 
     }
+    private fun datePicker()
+    {
+        val initialDate = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                val date = Calendar.getInstance()
+                date.set(Calendar.YEAR, year)
+                date.set(Calendar.MONTH, month)
+                date.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val formattedDate = simpleDateFormat.format(date.time)
+                binding.datePickerActions.editText?.setText(formattedDate)
+            }, initialDate.get(Calendar.YEAR), initialDate.get(Calendar.MONTH), initialDate.get(Calendar.DAY_OF_MONTH)
+        )
+// Show the dialog
+        datePickerDialog.show()
+    }
+
 }
