@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/saveButton">
+        app:layout_constraintBottom_toTopOf="@id/time_picker_actions">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -33,8 +33,34 @@
         android:layout_height="wrap_content"
         android:hint="Fecha"
         android:padding="16dp"
+        app:startIconDrawable="@drawable/ic_calendar"
         app:layout_constraintTop_toBottomOf="@id/nameTextField"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/time_picker_actions"
+        app:layout_constraintBottom_toTopOf="@id/saveButton">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false"
+            android:clickable="true"
+            android:importantForAccessibility="yes"
+            android:focusableInTouchMode="true">
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/time_picker_actions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Hora"
+        android:padding="16dp"
+        app:startIconDrawable="@drawable/ic_time"
+        app:layout_constraintTop_toBottomOf="@id/nameTextField"
+        app:layout_constraintStart_toEndOf="@id/date_picker_actions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/saveButton">
 
