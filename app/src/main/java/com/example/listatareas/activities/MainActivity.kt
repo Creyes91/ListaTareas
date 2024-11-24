@@ -9,16 +9,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.listatareas.R
 import com.example.listatareas.adapter.TaskAdapter
+import com.example.listatareas.adapter.dateAdapter
+import com.example.listatareas.data.Days
 import com.example.listatareas.data.Task
 import com.example.listatareas.data.providers.TaskDAO
 import com.example.listatareas.databinding.ActivityMainBinding
 import com.example.listatareas.utils.DBManager
+import java.time.LocalDate
+import java.util.Calendar
+import kotlin.time.Duration.Companion.days
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var taskDao: TaskDAO
     var taskList: MutableList<Task> = mutableListOf()
     lateinit var adapter: TaskAdapter
+    lateinit var dateAdapter: dateAdapter
+    var dateList: MutableList<Days> = mutableListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +34,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         taskDao= TaskDAO(this)
+
+        dateAdapter= dateAdapter(dateList)
+
+        initRvDates()
+
+
 
        adapter=TaskAdapter(taskList,{
 
@@ -40,13 +54,42 @@ class MainActivity : AppCompatActivity() {
        }
        )
         binding.recyclerView.adapter= adapter
+        binding.dateRecyclerView.adapter= dateAdapter
         binding.recyclerView.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-
+        binding.dateRecyclerView.layoutManager= LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
         binding.addFAButton.setOnClickListener{
             intent= Intent(this, TaskActivity::class.java)
             startActivity(intent)
         }
+
+
+
+    }
+
+    private fun initRvDates() {
+
+        var calendar= Calendar.getInstance()
+        var mesActual= calendar.get(Calendar.MONTH)
+        var añoActual=calendar.get(Calendar.YEAR)
+        var fecha: Days
+
+        calendar.set(Calendar.MONTH, mesActual)
+        calendar.set(Calendar.DAY_OF_MONTH,1)
+        calendar.set(Calendar.YEAR, añoActual)
+
+        val diasMes= calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+            fecha= Days(0,"");
+
+        for (dia in 1..diasMes){
+            fecha.day=dia
+
+            dateList.add(fecha)
+
+        }
+
+
 
 
 
@@ -88,5 +131,7 @@ class MainActivity : AppCompatActivity() {
         taskList= taskDao.findAll().toMutableList()
         adapter.updateItems(taskList)
     }
+
+
 
 }

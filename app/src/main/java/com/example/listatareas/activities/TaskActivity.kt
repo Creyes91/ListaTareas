@@ -135,7 +135,7 @@ class TaskActivity : AppCompatActivity() {
             time.set(Calendar.HOUR, hourOfDay)
             time.set(Calendar.MINUTE, minute)
 
-            val simpleTimeFormat= SimpleDateFormat("HH:mm", Locale.getDefault())
+            val simpleTimeFormat= SimpleDateFormat("hh:mm a", Locale.getDefault())
             val formattedTime= simpleTimeFormat.format(time.time)
             binding.timePickerActions.editText?.setText(formattedTime)
 

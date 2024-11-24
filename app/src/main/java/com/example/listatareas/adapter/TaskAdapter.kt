@@ -49,8 +49,10 @@ class TaskAdapter(var items: List<Task>,
 
 }
 
-class ViewHolder( val binding: ItemTaskBinding): RecyclerView.ViewHolder(binding.root)
+class ViewHolder(val binding: ItemTaskBinding): RecyclerView.ViewHolder(binding.root)
 {
+
+
     fun render (task: Task)
     {
         binding.nameTextView.text= task.name
