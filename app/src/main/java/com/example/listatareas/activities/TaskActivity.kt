@@ -1,6 +1,7 @@
 package com.example.listatareas.activities
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
@@ -8,12 +9,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.widget.TimePicker
 import com.example.listatareas.R
 import com.example.listatareas.data.Task
 import com.example.listatareas.data.providers.TaskDAO
 import com.example.listatareas.databinding.ActivityTaskBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.Locale
+import java.util.Timer
 
 
 class TaskActivity : AppCompatActivity() {
@@ -95,7 +98,9 @@ class TaskActivity : AppCompatActivity() {
 
         binding.datePickerActions.editText?.setOnClickListener{
             datePicker()
-
+        }
+        binding.timePickerActions.editText?.setOnClickListener{
+            timePicker()
         }
 
 
@@ -120,5 +125,26 @@ class TaskActivity : AppCompatActivity() {
 // Show the dialog
         datePickerDialog.show()
     }
+
+    private fun timePicker()
+    {
+        val hora= Calendar.getInstance()
+
+        val timeDialog = TimePickerDialog(this,TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute->
+            val time =  Calendar.getInstance()
+            time.set(Calendar.HOUR, hourOfDay)
+            time.set(Calendar.MINUTE, minute)
+
+            val simpleTimeFormat= SimpleDateFormat("HH:mm", Locale.getDefault())
+            val formattedTime= simpleTimeFormat.format(time.time)
+            binding.timePickerActions.editText?.setText(formattedTime)
+
+        },hora.get(Calendar.HOUR), hora.get(Calendar.MINUTE),true )
+
+        timeDialog.show()
+
+    }
+
+
 
 }
